@@ -1,4 +1,4 @@
-package com.yogee.yogee;
+package com.yogee.yogee.common;
 
 /**
  * Demo class
@@ -6,7 +6,7 @@ package com.yogee.yogee;
  * @author Jackqth
  * @date 2018/3/20
  */
-public class UserEntity {
+public class User {
     private Long id;
     private String name;
     private Integer age;

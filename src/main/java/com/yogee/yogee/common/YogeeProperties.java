@@ -1,4 +1,4 @@
-package com.yogee.yogee;
+package com.yogee.yogee.common;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
