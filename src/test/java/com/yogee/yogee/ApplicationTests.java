@@ -1,7 +1,6 @@
 package com.yogee.yogee;
 
 import com.yogee.yogee.common.User;
-import com.yogee.yogee.common.UserController;
 import com.yogee.yogee.service.UserMapper;
 import org.junit.Assert;
 import org.junit.Before;
