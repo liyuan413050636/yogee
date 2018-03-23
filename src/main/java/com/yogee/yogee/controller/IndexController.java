@@ -14,10 +14,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class IndexController {
 
-    @RequestMapping("/")
+    @RequestMapping("/home")
     public String index(ModelMap map){
         map.addAttribute("name","jackqth");
         return "index.html";
+    }
+
+    @RequestMapping("/login")
+    public String login(ModelMap map){
+        map.addAttribute("name","jackqth");
+        return "login.html";
     }
 
 }
