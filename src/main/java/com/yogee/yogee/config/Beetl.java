@@ -1,4 +1,4 @@
-package com.yogee.yogee;
+package com.yogee.yogee.config;
 
 import org.beetl.core.resource.ClasspathResourceLoader;
 import org.beetl.ext.spring.BeetlGroupUtilConfiguration;

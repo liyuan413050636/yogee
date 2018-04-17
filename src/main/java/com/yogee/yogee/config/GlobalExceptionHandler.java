@@ -1,4 +1,4 @@
-package com.yogee.yogee;
+package com.yogee.yogee.config;
 
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.ControllerAdvice;

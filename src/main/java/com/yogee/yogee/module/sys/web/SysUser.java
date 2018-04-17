@@ -1,4 +1,4 @@
-package com.yogee.yogee.module.sys.controller;
+package com.yogee.yogee.module.sys.web;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;

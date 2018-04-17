@@ -1,4 +1,4 @@
-package com.yogee.yogee;
+package com.yogee.yogee.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
