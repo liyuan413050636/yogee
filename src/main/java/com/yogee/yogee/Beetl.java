@@ -17,7 +17,8 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class Beetl {
-    @Value("${beetl.templatesPath}") String templatesPath;
+
+    @Value("${beetl.templatesPath}") String templatesPath;//模板跟目录 ，比如 "templates"
     @Bean(name = "beetlConfig")
     public BeetlGroupUtilConfiguration getBeetlGroupUtilConfiguration() {
         BeetlGroupUtilConfiguration beetlGroupUtilConfiguration = new BeetlGroupUtilConfiguration();
@@ -26,9 +27,9 @@ public class Beetl {
         if(loader==null){
             loader = Beetl.class.getClassLoader();
         }
-        ClasspathResourceLoader resourceLoader  = new ClasspathResourceLoader(loader,
+        ClasspathResourceLoader cploder = new ClasspathResourceLoader(loader,
                 templatesPath);
-        beetlGroupUtilConfiguration.setResourceLoader(resourceLoader );
+        beetlGroupUtilConfiguration.setResourceLoader(cploder);
         beetlGroupUtilConfiguration.init();
         //如果使用了优化编译器，涉及到字节码操作，需要添加ClassLoader
         beetlGroupUtilConfiguration.getGroupTemplate().setClassLoader(loader);

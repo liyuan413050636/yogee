@@ -13,7 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
  */
 @ControllerAdvice
 class GlobalExceptionHandler {
-    public static final String DEFAULT_ERROR_VIEW = "404.html";
+    public static final String DEFAULT_ERROR_VIEW = "error/404.html";
 
     @ExceptionHandler(value = Exception.class)
     public ModelAndView defaultErrorHandler(HttpServletRequest req, Exception e) throws Exception {
