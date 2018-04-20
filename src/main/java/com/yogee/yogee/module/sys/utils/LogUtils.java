@@ -3,30 +3,58 @@
  */
 package com.yogee.yogee.module.sys.utils;
 
-import com.yogee.yogee.utils.lang.ExceptionUtils;
-import com.yogee.yogee.utils.lang.ObjectUtils;
-import com.yogee.yogee.utils.lang.StringUtils;
-import com.yogee.yogee.utils.network.IpUtils;
-import com.yogee.yogee.utils.web.http.UserAgentUtils;
-
-import eu.bitwalker.useragentutils.UserAgent;
-import org.apache.ibatis.mapping.SqlCommandType;
-
-import org.springframework.core.DefaultParameterNameDiscoverer;
-import org.springframework.core.ParameterNameDiscoverer;
-import org.springframework.core.annotation.AnnotationUtils;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.method.HandlerMethod;
+import com.yogee.yogee.common.utils.lang.StringUtils;
+import com.yogee.yogee.module.sys.entity.Log;
+import com.yogee.yogee.module.sys.entity.User;
+import com.yogee.yogee.module.sys.interceptor.InterceptorLogEntity;
+import com.yogee.yogee.module.sys.interceptor.LogThread;
 
 import javax.servlet.http.HttpServletRequest;
-import java.lang.reflect.Method;
+import java.util.Date;
 
 /**
  * 日志工具类
- * @author ThinkGem
- * @version 2017-11-7
+ * @author Liyuan
+ * @version 2018-03-07
  */
 public class LogUtils {
+
+    public static final String CACHE_MENU_NAME_PATH_MAP = "menuNamePathMap";
+
+    /**
+     * 保存日志
+     */
+    public static void saveLog(HttpServletRequest request, String title) {
+        saveLog(request, null, null, title);
+    }
+
+    /**
+     * 保存日志
+     */
+    public static void saveLog(HttpServletRequest request, Object handler, Exception ex, String title) {
+        User user = UserUtils.getUser();
+        if (user != null && user.getId() != null) {
+            Log log = new Log();
+            log.setTitle(title);
+            log.setType(ex == null ? Log.TYPE_ACCESS : Log.TYPE_EXCEPTION);
+            log.setRemoteAddr(StringUtils.getRemoteAddr(request));
+            log.setUserAgent(request.getHeader("user-agent"));
+            log.setRequestUri(request.getRequestURI());
+            log.setParams(request.getParameterMap());
+            log.setMethod(request.getMethod());
+            log.setCreateBy(user);
+            log.setUpdateBy(user);
+            log.setUpdateDate(new Date());
+            log.setCreateDate(new Date());
+            // 异步保存日志
+            try {
+                InterceptorLogEntity entiry = new InterceptorLogEntity(log, handler, ex);
+                LogThread.interceptorLogQueue.put(entiry);
+            } catch (Exception e) {
+                e.printStackTrace(System.out);
+            }
+        }
+    }
 	
 //	/**
 //	 * 静态内部类，延迟加载，懒汉式，线程安全的单例模式
@@ -196,5 +224,7 @@ public class LogUtils {
 //
 //		}
 //	}
+
+
 
 }

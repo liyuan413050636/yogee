@@ -3,8 +3,8 @@
  */
 package com.yogee.yogee.module.sys.interceptor;
 
-import com.yogee.yogee.utils.lang.DateUtils;
-import com.yogee.yogee.utils.lang.TimeUtils;
+import com.yogee.yogee.common.utils.lang.DateUtils;
+import com.yogee.yogee.common.utils.lang.TimeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.NamedThreadLocal;
