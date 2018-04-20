@@ -18,7 +18,7 @@ public class SysUser {
     public String profile(ModelMap map){
         map.put("name","jackqth");
         map.put("avatar","http://localhost:8080/image/123.jpg");
-        return "sys/profile.html";
+        return "mapping/sys/profile.html";
     }
 
     @RequestMapping("/sysuserList")

@@ -82,14 +82,14 @@ public class AreaController extends BaseController {
 	public String save(Area area, Model model, RedirectAttributes redirectAttributes) {
 		if(Global.isDemoMode()){
 			addMessage(redirectAttributes, "演示模式，不允许操作！");
-			return "redirect:" + adminPath + "/sys/area";
+			return "redirect:" + adminPath + "/mapping/sys/area";
 		}
 		if (!beanValidator(model, area)){
 			return form(area, model);
 		}
 		areaService.save(area);
 		addMessage(redirectAttributes, "保存区域'" + area.getName() + "'成功");
-		return "redirect:" + adminPath + "/sys/area/";
+		return "redirect:" + adminPath + "/mapping/sys/area/";
 	}
 	
 	@RequiresPermissions("sys:area:edit")
@@ -97,7 +97,7 @@ public class AreaController extends BaseController {
 	public String delete(Area area, RedirectAttributes redirectAttributes) {
 		if(Global.isDemoMode()){
 			addMessage(redirectAttributes, "演示模式，不允许操作！");
-			return "redirect:" + adminPath + "/sys/area";
+			return "redirect:" + adminPath + "/mapping/sys/area";
 		}
 //		if (Area.isRoot(id)){
 //			addMessage(redirectAttributes, "删除区域失败, 不允许删除顶级区域或编号为空");
@@ -105,7 +105,7 @@ public class AreaController extends BaseController {
 			areaService.delete(area);
 			addMessage(redirectAttributes, "删除区域成功");
 //		}
-		return "redirect:" + adminPath + "/sys/area/";
+		return "redirect:" + adminPath + "/mapping/sys/area/";
 	}
 
 	@RequiresPermissions("user")

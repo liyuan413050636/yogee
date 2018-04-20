@@ -8,6 +8,7 @@ import com.yogee.yogee.common.utils.lang.TimeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.NamedThreadLocal;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -20,16 +21,24 @@ import java.text.SimpleDateFormat;
  * @author ThinkGem
  * @version 2014-8-19
  */
+@Component("controllerLogInterceptor")
 public class LogInterceptor implements HandlerInterceptor {
 
-	private static final ThreadLocal<Long> startTimeThreadLocal =
-			new NamedThreadLocal<Long>("ThreadLocal StartTime");
+	private static final ThreadLocal<Long> startTimeThreadLocal =new NamedThreadLocal<Long>("ThreadLocal StartTime"){
+		protected Long initialValue() {
+			Logger logger = LoggerFactory.getLogger(getClass());
+			logger.info("ThreadLocal StartTime initialValue");
+			long beginTime = System.currentTimeMillis();
+			return beginTime;
+
+		}
+	};
 	protected Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
                              Object handler) throws Exception {
-		long beginTime = System.currentTimeMillis();// 1、开始时间  
-		startTimeThreadLocal.set(beginTime);		// 线程绑定变量（该数据只有当前请求的线程可见）  
+		long beginTime = System.currentTimeMillis();// 1、开始时间
+		startTimeThreadLocal.set(beginTime);		// 线程绑定变量（该数据只有当前请求的线程可见）
 		if (logger.isDebugEnabled()){
 	        logger.debug("开始计时: {}  URI: {}", new SimpleDateFormat("hh:mm:ss.SSS")
 	        	.format(beginTime), request.getRequestURI());
@@ -55,15 +64,15 @@ public class LogInterceptor implements HandlerInterceptor {
 
 		// 保存日志
 //		LogUtils.saveLog(UserUtils.getUser(), request, handler, ex, null, null, executeTime);
-		
+
 		// 打印JVM信息。
 		if (logger.isDebugEnabled()){
 	        logger.debug("计时结束: {}  用时: {}  URI: {}  最大内存: {}m  已分配内存: {}m  已分配内存中的剩余空间: {}m  最大可用内存: {}m",
 	        		DateUtils.formatDate(endTime, "hh:mm:ss.SSS"), TimeUtils.formatDateAgo(executeTime),
-					request.getRequestURI(), Runtime.getRuntime().maxMemory()/1024/1024, Runtime.getRuntime().totalMemory()/1024/1024, Runtime.getRuntime().freeMemory()/1024/1024, 
-					(Runtime.getRuntime().maxMemory()-Runtime.getRuntime().totalMemory()+Runtime.getRuntime().freeMemory())/1024/1024); 
+					request.getRequestURI(), Runtime.getRuntime().maxMemory()/1024/1024, Runtime.getRuntime().totalMemory()/1024/1024, Runtime.getRuntime().freeMemory()/1024/1024,
+					(Runtime.getRuntime().maxMemory()-Runtime.getRuntime().totalMemory()+Runtime.getRuntime().freeMemory())/1024/1024);
 		}
-		
+
 	}
 
 }

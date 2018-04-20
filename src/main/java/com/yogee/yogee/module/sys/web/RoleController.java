@@ -79,11 +79,11 @@ public class RoleController extends BaseController {
 	public String save(Role role, Model model, RedirectAttributes redirectAttributes) {
 		if(!UserUtils.getUser().isAdmin()&&role.getSysData().equals(Global.YES)){
 			addMessage(redirectAttributes, "越权操作，只有超级管理员才能修改此数据！");
-			return "redirect:" + adminPath + "/sys/role/?repage";
+			return "redirect:" + adminPath + "/mapping/sys/role/?repage";
 		}
 		if(Global.isDemoMode()){
 			addMessage(redirectAttributes, "演示模式，不允许操作！");
-			return "redirect:" + adminPath + "/sys/role/?repage";
+			return "redirect:" + adminPath + "/mapping/sys/role/?repage";
 		}
 		if (!beanValidator(model, role)){
 			return form(role, model);
@@ -98,7 +98,7 @@ public class RoleController extends BaseController {
 		}
 		systemService.saveRole(role);
 		addMessage(redirectAttributes, "保存角色'" + role.getName() + "'成功");
-		return "redirect:" + adminPath + "/sys/role/?repage";
+		return "redirect:" + adminPath + "/mapping/sys/role/?repage";
 	}
 	
 	@RequiresPermissions("sys:role:edit")
@@ -106,11 +106,11 @@ public class RoleController extends BaseController {
 	public String delete(Role role, RedirectAttributes redirectAttributes) {
 		if(!UserUtils.getUser().isAdmin() && role.getSysData().equals(Global.YES)){
 			addMessage(redirectAttributes, "越权操作，只有超级管理员才能修改此数据！");
-			return "redirect:" + adminPath + "/sys/role/?repage";
+			return "redirect:" + adminPath + "/mapping/sys/role/?repage";
 		}
 		if(Global.isDemoMode()){
 			addMessage(redirectAttributes, "演示模式，不允许操作！");
-			return "redirect:" + adminPath + "/sys/role/?repage";
+			return "redirect:" + adminPath + "/mapping/sys/role/?repage";
 		}
 //		if (Role.isAdmin(id)){
 //			addMessage(redirectAttributes, "删除角色失败, 不允许内置角色或编号空");
@@ -120,7 +120,7 @@ public class RoleController extends BaseController {
 			systemService.deleteRole(role);
 			addMessage(redirectAttributes, "删除角色成功");
 //		}
-		return "redirect:" + adminPath + "/sys/role/?repage";
+		return "redirect:" + adminPath + "/mapping/sys/role/?repage";
 	}
 	
 	/**
@@ -190,7 +190,7 @@ public class RoleController extends BaseController {
 	public String outrole(String userId, String roleId, RedirectAttributes redirectAttributes) {
 		if(Global.isDemoMode()){
 			addMessage(redirectAttributes, "演示模式，不允许操作！");
-			return "redirect:" + adminPath + "/sys/role/assign?id="+roleId;
+			return "redirect:" + adminPath + "/mapping/sys/role/assign?id=" +roleId;
 		}
 		Role role = systemService.getRole(roleId);
 		User user = systemService.getUser(userId);
@@ -208,7 +208,7 @@ public class RoleController extends BaseController {
 				}
 			}		
 		}
-		return "redirect:" + adminPath + "/sys/role/assign?id="+role.getId();
+		return "redirect:" + adminPath + "/mapping/sys/role/assign?id=" +role.getId();
 	}
 	
 	/**
@@ -223,7 +223,7 @@ public class RoleController extends BaseController {
 	public String assignRole(Role role, String[] idsArr, RedirectAttributes redirectAttributes) {
 		if(Global.isDemoMode()){
 			addMessage(redirectAttributes, "演示模式，不允许操作！");
-			return "redirect:" + adminPath + "/sys/role/assign?id="+role.getId();
+			return "redirect:" + adminPath + "/mapping/sys/role/assign?id=" +role.getId();
 		}
 		StringBuilder msg = new StringBuilder();
 		int newNum = 0;
@@ -235,7 +235,7 @@ public class RoleController extends BaseController {
 			}
 		}
 		addMessage(redirectAttributes, "已成功分配 "+newNum+" 个用户"+msg);
-		return "redirect:" + adminPath + "/sys/role/assign?id="+role.getId();
+		return "redirect:" + adminPath + "/mapping/sys/role/assign?id=" +role.getId();
 	}
 
 	/**

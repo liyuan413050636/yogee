@@ -230,12 +230,14 @@ public class UserUtils {
 				return principal;
 			}
 		}catch (UnavailableSecurityManagerException e) {
-			
+
 		}catch (InvalidSessionException e){
-			
+
 		}
 		return null;
 	}
+
+
 	
 	public static Session getSession(){
 		try{
