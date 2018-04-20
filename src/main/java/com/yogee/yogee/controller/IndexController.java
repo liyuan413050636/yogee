@@ -17,7 +17,7 @@ public class IndexController {
     @RequestMapping("/home")
     public String index(ModelMap map){
         map.addAttribute("name","jackqth");
-        return "index.html";
+        return "views/index.html";
     }
 
     @RequestMapping("/login")
