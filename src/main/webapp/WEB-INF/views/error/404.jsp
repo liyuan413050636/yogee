@@ -1,4 +1,4 @@
-<%@ page import="com.yogee.yogee.common.utils.web.Servlets" %><%
+<%@ page import="com.yogee.yogee.common.web.Servlets" %><%
 response.setStatus(404);
 
 // 如果是异步请求或是手机端，则直接返回信息

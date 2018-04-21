@@ -8,7 +8,8 @@ import com.yogee.yogee.common.config.Global;
 import com.yogee.yogee.common.utils.idgen.IdGenerate;
 import com.yogee.yogee.common.utils.lang.DateUtils;
 import com.yogee.yogee.common.utils.lang.StringUtils;
-import com.yogee.yogee.common.utils.web.Servlets;
+import com.yogee.yogee.common.web.Servlets;
+import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.UnknownSessionException;
 import org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO;
@@ -37,14 +38,14 @@ public class CacheSessionDAO extends EnterpriseCacheSessionDAO implements Sessio
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	@Autowired
 	private IdGenerate idGenerate;
-//	@Autowired
-//	private CacheManager cacheManager;
+	@Autowired
+	private CacheManager cacheManager;
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		setSessionIdGenerator(idGenerate);
 		setActiveSessionsCacheName("activeSessionsCache");
-//		setCacheManager(cacheManager);
+		setCacheManager(cacheManager);
 	}
 
 	public CacheSessionDAO() {

@@ -12,7 +12,7 @@ import com.yogee.yogee.common.service.ServiceException;
 import com.yogee.yogee.common.utils.CacheUtils;
 import com.yogee.yogee.common.utils.Encodes;
 import com.yogee.yogee.common.utils.lang.StringUtils;
-import com.yogee.yogee.common.utils.web.Servlets;
+import com.yogee.yogee.common.web.Servlets;
 import com.yogee.yogee.module.sys.dao.MenuDao;
 import com.yogee.yogee.module.sys.dao.RoleDao;
 import com.yogee.yogee.module.sys.dao.UserDao;

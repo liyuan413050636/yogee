@@ -4,7 +4,7 @@
 package com.yogee.yogee.module.sys.web;
 
 import com.yogee.yogee.common.persistence.Page;
-import com.yogee.yogee.common.utils.web.BaseController;
+import com.yogee.yogee.common.web.BaseController;
 import com.yogee.yogee.module.sys.entity.Log;
 import com.yogee.yogee.module.sys.service.LogService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;

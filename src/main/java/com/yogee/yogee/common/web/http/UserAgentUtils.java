@@ -1,7 +1,7 @@
 /**
  * Copyright (c) 2017-Now http://www.yogee.xin All rights reserved.
  */
-package com.yogee.yogee.common.utils.web.http;
+package com.yogee.yogee.common.web.http;
 
 import eu.bitwalker.useragentutils.Browser;
 import eu.bitwalker.useragentutils.DeviceType;

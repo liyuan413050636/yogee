@@ -1,4 +1,4 @@
-package com.yogee.yogee.common.utils.web.http;
+package com.yogee.yogee.common.web.http;
 
 /**
  * Contains constant definitions for the HTTP header field names. See:

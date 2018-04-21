@@ -1,13 +1,13 @@
 /**
  * Copyright (c) 2005-2012 springside.org.cn
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
  */
 package com.yogee.yogee.common.mapper;
 
-import com.yogee.yogee.common.utils.Exceptions;
-import com.yogee.yogee.common.utils.Reflections;
+import com.yogee.yogee.common.utils.lang.ExceptionUtils;
 import com.yogee.yogee.common.utils.lang.StringUtils;
-import org.springframework.http.converter.HttpMessageConversionException;
-import org.springframework.util.Assert;
+import com.yogee.yogee.common.utils.reflect.ReflectUtils;
 
 import javax.xml.bind.*;
 import javax.xml.bind.annotation.XmlAnyElement;
@@ -36,7 +36,7 @@ public class JaxbMapper {
 	 * Java Object->Xml without encoding.
 	 */
 	public static String toXml(Object root) {
-		Class clazz = Reflections.getUserClass(root);
+		Class clazz = ReflectUtils.getUserClass(root);
 		return toXml(root, clazz, null);
 	}
 
@@ -44,7 +44,7 @@ public class JaxbMapper {
 	 * Java Object->Xml with encoding.
 	 */
 	public static String toXml(Object root, String encoding) {
-		Class clazz = Reflections.getUserClass(root);
+		Class clazz = ReflectUtils.getUserClass(root);
 		return toXml(root, clazz, encoding);
 	}
 
@@ -57,7 +57,7 @@ public class JaxbMapper {
 			createMarshaller(clazz, encoding).marshal(root, writer);
 			return writer.toString();
 		} catch (JAXBException e) {
-			throw Exceptions.unchecked(e);
+			throw ExceptionUtils.unchecked(e);
 		}
 	}
 
@@ -84,7 +84,7 @@ public class JaxbMapper {
 
 			return writer.toString();
 		} catch (JAXBException e) {
-			throw Exceptions.unchecked(e);
+			throw ExceptionUtils.unchecked(e);
 		}
 	}
 
@@ -97,7 +97,7 @@ public class JaxbMapper {
 			StringReader reader = new StringReader(xml);
 			return (T) createUnmarshaller(clazz).unmarshal(reader);
 		} catch (JAXBException e) {
-			throw Exceptions.unchecked(e);
+			throw ExceptionUtils.unchecked(e);
 		}
 	}
 
@@ -119,7 +119,7 @@ public class JaxbMapper {
 
 			return marshaller;
 		} catch (JAXBException e) {
-			throw Exceptions.unchecked(e);
+			throw ExceptionUtils.unchecked(e);
 		}
 	}
 
@@ -132,19 +132,23 @@ public class JaxbMapper {
 			JAXBContext jaxbContext = getJaxbContext(clazz);
 			return jaxbContext.createUnmarshaller();
 		} catch (JAXBException e) {
-			throw Exceptions.unchecked(e);
+			throw ExceptionUtils.unchecked(e);
 		}
 	}
 
 	protected static JAXBContext getJaxbContext(Class clazz) {
-		Assert.notNull(clazz, "'clazz' must not be null");
+		if (clazz == null){
+			throw new RuntimeException("'clazz' must not be null");
+		}
 		JAXBContext jaxbContext = jaxbContexts.get(clazz);
 		if (jaxbContext == null) {
 			try {
 				jaxbContext = JAXBContext.newInstance(clazz, CollectionWrapper.class);
 				jaxbContexts.putIfAbsent(clazz, jaxbContext);
 			} catch (JAXBException ex) {
-				throw new HttpMessageConversionException("Could not instantiate JAXBContext for class [" + clazz
+//				throw new HttpMessageConversionException("Could not instantiate JAXBContext for class [" + clazz
+//						+ "]: " + ex.getMessage(), ex);
+				throw new RuntimeException("Could not instantiate JAXBContext for class [" + clazz
 						+ "]: " + ex.getMessage(), ex);
 			}
 		}

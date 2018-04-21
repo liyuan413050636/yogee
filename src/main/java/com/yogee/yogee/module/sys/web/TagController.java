@@ -3,7 +3,7 @@
  */
 package com.yogee.yogee.module.sys.web;
 
-import com.yogee.yogee.common.utils.web.BaseController;
+import com.yogee.yogee.common.web.BaseController;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

@@ -9,7 +9,7 @@ import com.yogee.yogee.common.config.Global;
 import com.yogee.yogee.common.persistence.Page;
 import com.yogee.yogee.common.utils.Collections3;
 import com.yogee.yogee.common.utils.lang.StringUtils;
-import com.yogee.yogee.common.utils.web.BaseController;
+import com.yogee.yogee.common.web.BaseController;
 import com.yogee.yogee.module.sys.entity.Office;
 import com.yogee.yogee.module.sys.entity.Role;
 import com.yogee.yogee.module.sys.entity.User;

@@ -9,7 +9,7 @@ import com.yogee.yogee.common.utils.PropertiesLoader;
 import com.yogee.yogee.common.utils.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.env.Environment;
+import org.springframework.boot.bind.RelaxedPropertyResolver;
 
 import java.util.Map;
 
@@ -23,7 +23,7 @@ public class Global {
 
     private static Logger logger = LoggerFactory.getLogger(Global.class);
 
-    static Environment environment;
+    static RelaxedPropertyResolver resolver;
     /**
      * 当前对象实例
      */
@@ -71,7 +71,7 @@ public class Global {
         String value = map.get(key);
         if (value == null) {
             try {
-                value = environment.getProperty(key);
+                value = resolver.getProperty(key);
                 if (StringUtils.isBlank(value))
                     throw new RuntimeException("value null");
                 map.put(key, value);
@@ -123,7 +123,7 @@ public class Global {
         if (map.containsKey("spring.datasource.url"))
             return map.get("spring.datasource.url");
         try {
-            String url = environment.getProperty("spring.datasource.url");
+            String url = resolver.getProperty("spring.datasource.url");
             String type = getDbType(url);
             map.put("spring.datasource.url", type);
             return type;

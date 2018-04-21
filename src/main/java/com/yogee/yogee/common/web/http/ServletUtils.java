@@ -1,13 +1,13 @@
 /**
  * Copyright (c) 2017-Now http://www.yogee.xin All rights reserved.
  */
-package com.yogee.yogee.common.utils.web.http;
+package com.yogee.yogee.common.web.http;
 
+import com.yogee.yogee.common.mapper.JsonMapper;
+import com.yogee.yogee.common.mapper.XmlMapper;
 import com.yogee.yogee.common.utils.collect.MapUtils;
 import com.yogee.yogee.common.utils.io.PropertiesUtils;
 import com.yogee.yogee.common.utils.lang.StringUtils;
-import com.yogee.yogee.common.utils.mapper.JsonMapper;
-import com.yogee.yogee.common.utils.mapper.XmlMapper;
 import org.apache.commons.lang3.Validate;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;

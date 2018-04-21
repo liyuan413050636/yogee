@@ -1,7 +1,7 @@
 /**
  * Copyright &copy; 2012-2016 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
  */
-package com.yogee.yogee.common.utils.web;
+package com.yogee.yogee.common.web;
 
 import com.yogee.yogee.common.mapper.JsonMapper;
 import com.yogee.yogee.common.utils.lang.DateUtils;
@@ -134,7 +134,7 @@ public abstract class BaseController {
      * @return
      */
     protected String renderString(HttpServletResponse response, Object object) {
-        return renderString(response, JsonMapper.toJsonString(object), "application/json");
+        return renderString(response, JsonMapper.toJson(object), "application/json");
     }
 
     /**

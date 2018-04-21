@@ -1,5 +1,5 @@
 /**
- * Copyright &copy; 2012-2016 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
+ * Copyright (c) 2017-Now http://www.yogee.xin All rights reserved.
  */
 package com.yogee.yogee.common.mapper;
 
@@ -8,22 +8,23 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser.Feature;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.*;
-import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.fasterxml.jackson.module.jaxb.JaxbAnnotationModule;
-import org.apache.commons.lang3.StringEscapeUtils;
+import com.yogee.yogee.common.utils.collect.ListUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 
 /**
  * 简单封装Jackson，实现JSON String<->Java Object的Mapper.
  * 封装不同的输出风格, 使用不同的builder函数创建实例.
  * @author ThinkGem
- * @version 2013-11-15
+ * @version 2016-3-2
  */
 public class JsonMapper extends ObjectMapper {
 
@@ -31,61 +32,56 @@ public class JsonMapper extends ObjectMapper {
 
 	private static Logger logger = LoggerFactory.getLogger(JsonMapper.class);
 
-	private static JsonMapper mapper;
-
-	public JsonMapper() {
-		this(Include.NON_EMPTY);
+	/**
+	 * 当前类的实例持有者（静态内部类，延迟加载，懒汉式，线程安全的单例模式）
+	 */
+	private static final class JsonMapperHolder {
+		private static final JsonMapper INSTANCE = new JsonMapper();
 	}
-
-	public JsonMapper(Include include) {
-		// 设置输出时包含属性的风格
-		if (include != null) {
-			this.setSerializationInclusion(include);
-		}
-		// 允许单引号、允许不带引号的字段名称
-		this.enableSimple();
+	
+	public JsonMapper() {
+		// 为Null时不序列化
+		this.setSerializationInclusion(Include.NON_NULL);
+		// 允许单引号
+		this.configure(Feature.ALLOW_SINGLE_QUOTES, true);
+		// 允许不带引号的字段名称
+		this.configure(Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
+		// 设置时区
+		this.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
 		// 设置输入时忽略在JSON字符串中存在但Java对象实际没有的属性
 		this.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-        // 空值处理为空串
+        // 遇到空值处理为空串
 		this.getSerializerProvider().setNullValueSerializer(new JsonSerializer<Object>(){
 			@Override
 			public void serialize(Object value, JsonGenerator jgen,
-					SerializerProvider provider) throws IOException,
-                    JsonProcessingException {
+					SerializerProvider provider) throws IOException, JsonProcessingException {
 				jgen.writeString("");
 			}
         });
-		// 进行HTML解码。
-		this.registerModule(new SimpleModule().addSerializer(String.class, new JsonSerializer<String>(){
-			@Override
-			public void serialize(String value, JsonGenerator jgen,
-					SerializerProvider provider) throws IOException,
-                    JsonProcessingException {
-				jgen.writeString(StringEscapeUtils.unescapeHtml4(value));
-			}
-        }));
-		// 设置时区
-		this.setTimeZone(TimeZone.getDefault());//getTimeZone("GMT+8:00")
-	}
-
-	/**
-	 * 创建只输出非Null且非Empty(如List.isEmpty)的属性到Json字符串的Mapper,建议在外部接口中使用.
-	 */
-	public static JsonMapper getInstance() {
-		if (mapper == null){
-			mapper = new JsonMapper().enableSimple();
-		}
-		return mapper;
-	}
-
-	/**
-	 * 创建只输出初始值被改变的属性到Json字符串的Mapper, 最节约的存储方式，建议在内部接口中使用。
-	 */
-	public static JsonMapper nonDefaultMapper() {
-		if (mapper == null){
-			mapper = new JsonMapper(Include.NON_DEFAULT);
-		}
-		return mapper;
+//		// 统一默认Date类型转换格式。如果设置，Bean中的@JsonFormat将失效
+//		final String dataFormat = Global.getProperty("json.mapper.dataFormat");
+//		if (StringUtils.isNotBlank(dataFormat)){
+//			this.registerModule(new SimpleModule().addSerializer(Date.class, new JsonSerializer<Date>(){
+//				@Override
+//				public void serialize(Date value, JsonGenerator jgen,
+//						SerializerProvider provider) throws IOException, JsonProcessingException {
+//					if (value != null){
+//						jgen.writeString(DateUtils.formatDate(value, dataFormat));
+//					}
+//				}
+//	        }));
+//		}
+//		// 进行HTML解码（先注释掉，否则会造成XSS攻击，比如菜单名称里输入<script>alert(123)</script>转josn后就会还原这个编码 ，并在浏览器中运行）。
+//		this.registerModule(new SimpleModule().addSerializer(String.class, new JsonSerializer<String>(){
+//			@Override
+//			public void serialize(String value, JsonGenerator jgen,
+//					SerializerProvider provider) throws IOException,
+//					JsonProcessingException {
+//				if (value != null){
+//					jgen.writeString(StringEscapeUtils.unescapeHtml4(value));
+//				}
+//			}
+//        }));
 	}
 	
 	/**
@@ -93,7 +89,7 @@ public class JsonMapper extends ObjectMapper {
 	 * 如果对象为Null, 返回"null".
 	 * 如果集合为空集合, 返回"[]".
 	 */
-	public String toJson(Object object) {
+	public String toJsonString(Object object) {
 		try {
 			return this.writeValueAsString(object);
 		} catch (IOException e) {
@@ -103,16 +99,21 @@ public class JsonMapper extends ObjectMapper {
 	}
 
 	/**
+	 * 输出JSONP格式数据.
+	 */
+	public String toJsonpString(String functionName, Object object) {
+		return toJsonString(new JSONPObject(functionName, object));
+	}
+	
+	/**
 	 * 反序列化POJO或简单Collection如List<String>.
-	 * 
 	 * 如果JSON字符串为Null或"null"字符串, 返回Null.
 	 * 如果JSON字符串为"[]", 返回空集合.
-	 * 
 	 * 如需反序列化复杂Collection如List<MyBean>, 请使用fromJson(String,JavaType)
 	 * @see #fromJson(String, JavaType)
 	 */
-	public <T> T fromJson(String jsonString, Class<T> clazz) {
-		if (StringUtils.isEmpty(jsonString)) {
+	public <T> T fromJsonString(String jsonString, Class<T> clazz) {
+		if (StringUtils.isEmpty(jsonString) || "<CLOB>".equals(jsonString)) {
 			return null;
 		}
 		try {
@@ -124,12 +125,12 @@ public class JsonMapper extends ObjectMapper {
 	}
 
 	/**
-	 * 反序列化复杂Collection如List<Bean>, 先使用函數createCollectionType构造类型,然后调用本函数.
+	 * 反序列化复杂Collection如List<Bean>, 先使用函数createCollectionType构造类型,然后调用本函数.
 	 * @see #createCollectionType(Class, Class...)
 	 */
 	@SuppressWarnings("unchecked")
-	public <T> T fromJson(String jsonString, JavaType javaType) {
-		if (StringUtils.isEmpty(jsonString)) {
+	public <T> T fromJsonString(String jsonString, JavaType javaType) {
+		if (StringUtils.isEmpty(jsonString) || "<CLOB>".equals(jsonString)) {
 			return null;
 		}
 		try {
@@ -141,7 +142,7 @@ public class JsonMapper extends ObjectMapper {
 	}
 
 	/**
-	 * 構造泛型的Collection Type如:
+	 * 构造泛型的Collection Type如:
 	 * ArrayList<MyBean>, 则调用constructCollectionType(ArrayList.class,MyBean.class)
 	 * HashMap<String,MyBean>, 则调用(HashMap.class,String.class, MyBean.class)
 	 */
@@ -150,7 +151,7 @@ public class JsonMapper extends ObjectMapper {
 	}
 
 	/**
-	 * 當JSON裡只含有Bean的部分屬性時，更新一個已存在Bean，只覆蓋該部分的屬性.
+	 * 当JSON里只含有Bean的部分属性時，更新一个已存在Bean，只覆盖该部分的属性.
 	 */
 	@SuppressWarnings("unchecked")
 	public <T> T update(String jsonString, T object) {
@@ -165,16 +166,9 @@ public class JsonMapper extends ObjectMapper {
 	}
 
 	/**
-	 * 輸出JSONP格式數據.
-	 */
-	public String toJsonP(String functionName, Object object) {
-		return toJson(new JSONPObject(functionName, object));
-	}
-
-	/**
-	 * 設定是否使用Enum的toString函數來讀寫Enum,
-	 * 為False時時使用Enum的name()函數來讀寫Enum, 默認為False.
-	 * 注意本函數一定要在Mapper創建後, 所有的讀寫動作之前調用.
+	 * 设定是否使用Enum的toString函数来读写Enum,
+	 * 为False实时使用Enum的name()函数来读写Enum, 默认为False.
+	 * 注意本函数一定要在Mapper创建后, 所有的读写动作之前调用.
 	 */
 	public JsonMapper enableEnumUseToString() {
 		this.enable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING);
@@ -193,16 +187,6 @@ public class JsonMapper extends ObjectMapper {
 	}
 
 	/**
-	 * 允许单引号
-	 * 允许不带引号的字段名称
-	 */
-	public JsonMapper enableSimple() {
-		this.configure(Feature.ALLOW_SINGLE_QUOTES, true);
-		this.configure(Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
-		return this;
-	}
-	
-	/**
 	 * 取出Mapper做进一步的设置或使用其他序列化API.
 	 */
 	public ObjectMapper getMapper() {
@@ -210,42 +194,76 @@ public class JsonMapper extends ObjectMapper {
 	}
 
 	/**
-	 * 对象转换为JSON字符串
-	 * @param object
-	 * @return
+	 * 获取当前实例
 	 */
-	public static String toJsonString(Object object){
-		return JsonMapper.getInstance().toJson(object);
+	public static JsonMapper getInstance() {
+		return JsonMapperHolder.INSTANCE;
+	}
+
+	/**
+	 * 对象转换为JSON字符串
+	 */
+	public static String toJson(Object object){
+		return JsonMapper.getInstance().toJsonString(object);
+	}
+	
+	/**
+	 * 对象转换为JSONP字符串
+	 */
+	public static String toJsonp(String functionName, Object object){
+		return JsonMapper.getInstance().toJsonpString(functionName, object);
 	}
 	
 	/**
 	 * JSON字符串转换为对象
-	 * @param jsonString
-	 * @param clazz
-	 * @return
 	 */
-	public static Object fromJsonString(String jsonString, Class<?> clazz){
-		return JsonMapper.getInstance().fromJson(jsonString, clazz);
+	@SuppressWarnings("unchecked")
+	public static <T> T fromJson(String jsonString, Class<?> clazz){
+		return (T) JsonMapper.getInstance().fromJsonString(jsonString, clazz);
 	}
 	
 	/**
-	 * 测试
+	 * JSON字符串转换为 List<Map<String, Object>>
 	 */
+	public static List<Map<String, Object>> fromJsonForMapList(String jsonString){
+		List<Map<String, Object>> result = ListUtils.newArrayList();
+		if (StringUtils.startsWith(jsonString, "{")){
+			Map<String, Object> map = fromJson(jsonString, Map.class);
+			if (map != null){
+				result.add(map);
+			}
+		}else if (StringUtils.startsWith(jsonString, "[")){
+			List<Map<String, Object>> list = fromJson(jsonString, List.class);
+			if (list != null){
+				result = list;
+			}
+		}
+		return result;
+	}
+	
 //	public static void main(String[] args) {
-//		List<Map<String, Object>> list = Lists.newArrayList();
-//		Map<String, Object> map = Maps.newHashMap();
+//		List<Map<String, Object>> list = ListUtils.newArrayList();
+//		Map<String, Object> map = MapUtils.newHashMap();
 //		map.put("id", 1);
 //		map.put("pId", -1);
 //		map.put("name", "根节点");
 //		list.add(map);
-//		map = Maps.newHashMap();
+//		map = MapUtils.newHashMap();
 //		map.put("id", 2);
 //		map.put("pId", 1);
 //		map.put("name", "你好");
 //		map.put("open", true);
 //		list.add(map);
-//		String json = JsonMapper.getInstance().toJson(list);
+//		String json = JsonMapper.toJson(list);
 //		System.out.println(json);
+//		List<Map<String, Object>> map2 = JsonMapper.fromJson(json, List.class);
+//		System.out.println(map2);
+//		Map<String, Object> map3 = JsonMapper.fromJson("{extendS1:{title:'站牌号',"
+//				+ "sort:1,type:'text',maxlength:0,maxlength:30},extendS2:{title:'规模分类',"
+//				+ "sort:2,type:'dict',dictType:'scope_category'}}", Map.class);
+//		System.out.println(map3);
+//		List<String> list2 = fromJson("[1,2]", List.class);
+//		System.out.println(list2);
 //	}
 	
 }

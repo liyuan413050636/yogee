@@ -1,9 +1,10 @@
 /**
- * Copyright (c) 2005-2012 springside.org.cn
+ * Copyright (c) 2017-Now http://www.yogee.xin All rights reserved.
  */
 package com.yogee.yogee.common.mapper;
 
-import com.google.common.collect.Lists;
+
+import com.yogee.yogee.common.utils.collect.ListUtils;
 import org.dozer.DozerBeanMapper;
 
 import java.util.Collection;
@@ -39,7 +40,7 @@ public class BeanMapper {
 	 */
 	@SuppressWarnings("rawtypes")
 	public static <T> List<T> mapList(Collection sourceList, Class<T> destinationClass) {
-		List<T> destinationList = Lists.newArrayList();
+		List<T> destinationList = ListUtils.newArrayList();
 		for (Object sourceObject : sourceList) {
 			T destinationObject = dozer.map(sourceObject, destinationClass);
 			destinationList.add(destinationObject);

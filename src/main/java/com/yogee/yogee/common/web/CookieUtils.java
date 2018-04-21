@@ -1,7 +1,7 @@
 /**
  * Copyright (c) 2017-Now http://www.yogee.xin All rights reserved.
  */
-package com.yogee.yogee.common.utils.web;
+package com.yogee.yogee.common.web;
 
 import com.yogee.yogee.common.utils.lang.StringUtils;
 

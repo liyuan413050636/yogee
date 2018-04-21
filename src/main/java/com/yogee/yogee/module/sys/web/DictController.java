@@ -8,7 +8,7 @@ import com.google.common.collect.Maps;
 import com.yogee.yogee.common.config.Global;
 import com.yogee.yogee.common.persistence.Page;
 import com.yogee.yogee.common.utils.lang.StringUtils;
-import com.yogee.yogee.common.utils.web.BaseController;
+import com.yogee.yogee.common.web.BaseController;
 import com.yogee.yogee.module.sys.entity.Dict;
 import com.yogee.yogee.module.sys.service.DictService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;

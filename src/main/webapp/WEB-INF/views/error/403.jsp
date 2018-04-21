@@ -1,6 +1,6 @@
 <%@ page import="com.yogee.yogee.common.utils.Exceptions" %>
 <%@ page import="com.yogee.yogee.common.utils.lang.StringUtils" %>
-<%@ page import="com.yogee.yogee.common.utils.web.Servlets" %><%
+<%@ page import="com.yogee.yogee.common.web.Servlets" %><%
 response.setStatus(403);
 
 //获取异常类

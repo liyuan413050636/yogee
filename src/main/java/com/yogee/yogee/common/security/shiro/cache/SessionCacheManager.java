@@ -4,7 +4,7 @@
 package com.yogee.yogee.common.security.shiro.cache;
 
 import com.google.common.collect.Sets;
-import com.yogee.yogee.common.utils.web.Servlets;
+import com.yogee.yogee.common.web.Servlets;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.UnavailableSecurityManagerException;
 import org.apache.shiro.cache.Cache;

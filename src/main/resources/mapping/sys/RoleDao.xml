@@ -40,7 +40,8 @@
     
 	<select id="get" resultMap="roleResult">
 		SELECT
-			<include refid="roleColumns"/>,<!-- 
+			<include refid="roleColumns"/>,
+		<!-- 
 			ur.user_id AS "userList.id",
 			u.login_name AS "userList.loginName",
 			u.name AS "userList.name",
@@ -48,7 +49,8 @@
 			u.phone AS "userList.phone",
 			u.mobile AS "userList.mobile",
 			uc.name AS "userList.company.name",
-			uo.name AS "userList.office.name", -->
+			uo.name AS "userList.office.name", 
+			-->
 			rm.menu_id AS "menuList.id",
 			ro.office_id AS "officeList.id"
 		FROM sys_role a

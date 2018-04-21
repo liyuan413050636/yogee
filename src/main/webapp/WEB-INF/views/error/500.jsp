@@ -24,7 +24,7 @@ if (Servlets.isAjaxRequest(request)) {
 else {
 %>
 <%@page import="com.yogee.yogee.common.utils.Exceptions,com.yogee.yogee.common.utils.lang.StringUtils"%>
-<%@ page import="com.yogee.yogee.common.utils.web.Servlets" %>
+<%@ page import="com.yogee.yogee.common.web.Servlets" %>
 <%@ page import="org.slf4j.LoggerFactory" %>
 <%@page contentType="text/html;charset=UTF-8" isErrorPage="true"%>
 <%@include file="/WEB-INF/views/include/taglib.jsp"%>

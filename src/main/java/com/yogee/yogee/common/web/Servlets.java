@@ -3,7 +3,7 @@
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
-package com.yogee.yogee.common.utils.web;
+package com.yogee.yogee.common.web;
 
 import com.google.common.net.HttpHeaders;
 import com.yogee.yogee.common.config.Global;

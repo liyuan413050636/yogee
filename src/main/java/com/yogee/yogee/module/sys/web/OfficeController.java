@@ -7,7 +7,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.yogee.yogee.common.config.Global;
 import com.yogee.yogee.common.utils.lang.StringUtils;
-import com.yogee.yogee.common.utils.web.BaseController;
+import com.yogee.yogee.common.web.BaseController;
 import com.yogee.yogee.module.sys.entity.Office;
 import com.yogee.yogee.module.sys.entity.User;
 import com.yogee.yogee.module.sys.service.OfficeService;

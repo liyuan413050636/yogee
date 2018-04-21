@@ -5,7 +5,7 @@ package com.yogee.yogee.common.persistence;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.yogee.yogee.common.config.Global;
-import com.yogee.yogee.common.utils.web.CookieUtils;
+import com.yogee.yogee.common.web.CookieUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;

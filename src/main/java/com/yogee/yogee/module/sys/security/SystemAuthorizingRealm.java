@@ -7,7 +7,7 @@ import com.yogee.yogee.common.config.Global;
 import com.yogee.yogee.common.servlet.ValidateCodeServlet;
 import com.yogee.yogee.common.utils.Encodes;
 import com.yogee.yogee.common.utils.SpringContextHolder;
-import com.yogee.yogee.common.utils.web.Servlets;
+import com.yogee.yogee.common.web.Servlets;
 import com.yogee.yogee.module.sys.entity.Menu;
 import com.yogee.yogee.module.sys.entity.Role;
 import com.yogee.yogee.module.sys.entity.User;

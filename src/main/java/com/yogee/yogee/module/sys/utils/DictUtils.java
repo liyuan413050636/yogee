@@ -87,7 +87,7 @@ public class DictUtils {
 	 * @return
 	 */
 	public static String getDictListJson(String type){
-		return JsonMapper.toJsonString(getDictList(type));
+		return JsonMapper.toJson(getDictList(type));
 	}
 	
 }

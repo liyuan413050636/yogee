@@ -6,7 +6,7 @@
 	<groupId>com.yogee</groupId>
 	<artifactId>yogee</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 
 	<name>yogeeBoot</name>
 	<description>yogee test spring boot</description>
@@ -14,7 +14,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.0.0.RELEASE</version>
+		<version>1.5.10.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
@@ -78,10 +78,10 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-aop</artifactId>
 		</dependency>
-		<!--<dependency>-->
-			<!--<groupId>org.springframework.boot</groupId>-->
-			<!--<artifactId>spring-boot-starter-cache</artifactId>-->
-		<!--</dependency>-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-cache</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.mybatis.spring.boot</groupId>
 			<artifactId>mybatis-spring-boot-starter</artifactId>
@@ -134,8 +134,7 @@
 		</dependency>
 		<dependency>
 			<groupId>net.sf.ehcache</groupId>
-			<artifactId>ehcache-core</artifactId>
-			<version>2.6.11</version>
+			<artifactId>ehcache</artifactId>
 		</dependency>
 
 		<!-- SECURITY begin -->
@@ -153,12 +152,12 @@
 			<groupId>org.apache.shiro</groupId>
 			<artifactId>shiro-cas</artifactId>
 			<version>${shiro.version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>commons-logging</groupId>
-					<artifactId>commons-logging</artifactId>
-				</exclusion>
-			</exclusions>
+			<!--<exclusions>-->
+				<!--<exclusion>-->
+					<!--<groupId>commons-logging</groupId>-->
+					<!--<artifactId>commons-logging</artifactId>-->
+				<!--</exclusion>-->
+			<!--</exclusions>-->
 		</dependency>
 		<dependency>
 			<groupId>org.apache.shiro</groupId>
@@ -452,15 +451,55 @@
 			<version>1.1.1</version>
 		</dependency>
 		<!--utils end-->
-
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.3</version>
+		</dependency>
 		<!-- https://mvnrepository.com/artifact/com.adobe.xmp/xmpcore -->
 		<dependency>
 			<groupId>com.adobe.xmp</groupId>
 			<artifactId>xmpcore</artifactId>
 			<version>5.1.2</version>
 		</dependency>
+		<!-- CKFinder begin -->
+		<dependency>
+			<groupId>net.coobird</groupId>
+			<artifactId>thumbnailator</artifactId>
+			<version>0.4.8</version>
+		</dependency>
+		<dependency>
+			<groupId>com.ckfinder</groupId>
+			<artifactId>apache-ant-zip</artifactId>
+			<version>2.3</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/apache-ant-zip-2.3.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>com.ckfinder</groupId>
+			<artifactId>ckfinder</artifactId>
+			<version>2.3</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/ckfinder-2.3.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>com.ckfinder</groupId>
+			<artifactId>ckfinderplugin-fileeditor</artifactId>
+			<version>2.3</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/ckfinderplugin-fileeditor-2.3.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>com.ckfinder</groupId>
+			<artifactId>ckfinderplugin-imageresize</artifactId>
+			<version>2.3</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/ckfinderplugin-imageresize-2.3.jar</systemPath>
+		</dependency>
 
 	</dependencies>
+
+
 
 	<build>
 		<plugins>
@@ -469,6 +508,15 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
 					<fork>true</fork>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<excludeArtifactIds>
+						slf4j-log4j12
+					</excludeArtifactIds>
 				</configuration>
 			</plugin>
 		</plugins>
