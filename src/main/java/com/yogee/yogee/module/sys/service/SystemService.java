@@ -153,7 +153,7 @@ public class SystemService extends BaseService {
 			// 清除用户缓存
 			UserUtils.clearCache(user);
 			// // 清除权限缓存
-			// systemRealm.clearAllCachedAuthorizationInfo();
+//			 systemRealm.clearAllCachedAuthorizationInfo();
 		}
 	}
 
