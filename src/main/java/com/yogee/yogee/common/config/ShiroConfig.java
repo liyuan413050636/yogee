@@ -98,7 +98,7 @@ public class ShiroConfig {
         sessionManager.setGlobalSessionTimeout(86400000);
         sessionManager.setSessionValidationInterval(1800000);
         sessionManager.setSessionValidationSchedulerEnabled(true);
-        sessionManager.setSessionIdCookie(new SimpleCookie("wolfking.jeesite.session.id"));
+        sessionManager.setSessionIdCookie(new SimpleCookie("yogee.yogee.session.id"));
         sessionManager.setSessionIdCookieEnabled(true);
         return sessionManager;
     }

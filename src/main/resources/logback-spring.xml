@@ -69,7 +69,7 @@
 		</filter> 
 	</appender>
 	
-	<logger name="com.wolfking" level="INFO">
+	<logger name="com.yogee" level="INFO">
 		<appender-ref ref="infoDailyRollingFile" />
 		<appender-ref ref="severeDailyRollingFile" />
 	</logger>
