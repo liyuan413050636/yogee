@@ -23,11 +23,12 @@ import java.io.IOException;
  * @author ThinkGem
  * @version 2014-06-25
  */
-@WebServlet(urlPatterns = "/static/ckfinder/core/connector/java/connector.java", initParams = {
-        @WebInitParam(name = "XMLConfig", value = "classpath:ckfinder.xml"),
-        @WebInitParam(name = "debug", value = "false"),
-        @WebInitParam(name = "configuration", value = "com.yogee.yogee.common.web.CKFinderConfig")
-}, loadOnStartup = 1)
+@WebServlet(urlPatterns = "/static/ckfinder/core/connector/java/connector.java",
+        initParams = {
+                @WebInitParam(name = "XMLConfig", value = "classpath:ckfinder.xml"),
+                @WebInitParam(name = "debug", value = "false"),
+                @WebInitParam(name = "configuration", value = "com.yogee.yogee.common.web.CKFinderConfig")
+        }, loadOnStartup = 1)
 public class CKFinderConnectorServlet extends ConnectorServlet {
 
     private static final long serialVersionUID = 1L;
